@@ -3,7 +3,7 @@
 
 <a href="https://riot.im/app/#/room/#dockermatrix:matrix.aventer.biz" target="_new"><img src="https://img.shields.io/static/v1?label=Chat&message=Matrix&color=brightgreen"></a></span></a>
 <a href="https://hub.docker.com/r/avhost/docker-matrix-riot" target="_new">![Docker Pulls](https://img.shields.io/docker/pulls/avhost/docker-matrix)</a>
-<a href="https://liberapay.com/docker-mesos" target="_new"><img src="https://img.shields.io/liberapay/receives/AVENTER.svg?logo=liberapay"></a>
+<a href="https://liberapay.com/docker-matrix" target="_new"><img src="https://img.shields.io/liberapay/receives/AVENTER.svg?logo=liberapay"></a>
 
 
 ## Notice

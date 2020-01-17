@@ -1,4 +1,4 @@
-FROM alpine:3.5
+FROM alpine:3.11
 
 # Maintainer
 MAINTAINER Andreas Peters <support@aventer.biz>
@@ -10,7 +10,7 @@ COPY adds/start.sh /start.sh
 ENTRYPOINT ["/start.sh"]
 
 # Git branch to download
-ARG BV_VEC=v1.5.6
+ARG BV_VEC=v1.5.7
 ENV BV_VEC=${BV_VEC:-master}
 
 # To rebuild the image, add `--build-arg REBUILD=$(date)` to your docker build
@@ -26,22 +26,21 @@ RUN chmod a+x /start.sh \
         libevent \
         libffi \
         libjpeg-turbo \
-        libssl1.0 \
+        libressl \
         nodejs \
+        npm \
         sqlite-libs \
-	git \
+	    git \
         unzip \
         || exit 1 ; \
     npm install -g webpack http-server yarn \
-    && curl -L https://github.com/vector-im/riot-web/archive/$BV_VEC.zip -o v.zip \
-    && unzip v.zip \
-    && rm v.zip \
-    && mv riot-web-* riot-web \
-    && cd riot-web \
-    && npm install \
+    && git clone --branch $BV_VEC --depth 1 https://github.com/vector-im/riot-web.git /riot-web \    
+    && cd /riot-web \
+    && git checkout $BV_VEC \
+    && yarn install \
     && rm -rf /riot-web/node_modules/phantomjs-prebuilt/phantomjs \
     && echo "riot:  $BV_VEC " > /synapse.version \
-    && npm run build \
+    && yarn build \
     || exit 1 \
     ; \
     mv /riot-web/webapp / ; \
@@ -49,13 +48,15 @@ RUN chmod a+x /start.sh \
     rm -rf /riot-web ; \
     rm -rf /root/.npm ; \
     rm -rf /tmp/* ; \
-    rm -rf /urs/lib/node_modules ; \
+    rm -rf /usr/local/share/.cache ;\
+    rm -rf /usr/lib/node_modules/webpack ;\
     apk del \
         unzip \
         libevent \
         libffi \
         libjpeg-turbo \
-        libssl1.0 \
+        libressl \
+        npm \
         sqlite-libs \
 	git \
 	curl \

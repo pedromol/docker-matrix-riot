@@ -10,7 +10,7 @@ COPY adds/start.sh /start.sh
 ENTRYPOINT ["/start.sh"]
 
 # Git branch to download
-ARG BV_VEC=v1.5.7
+ARG BV_VEC=v1.5.9
 ENV BV_VEC=${BV_VEC:-master}
 
 # To rebuild the image, add `--build-arg REBUILD=$(date)` to your docker build
@@ -27,16 +27,18 @@ RUN chmod a+x /start.sh \
         libffi \
         libjpeg-turbo \
         libressl \
+        sqlite-libs \
+	git \
+        unzip \
         nodejs \
         npm \
-        sqlite-libs \
-	    git \
-        unzip \
-        || exit 1 ; \
-    npm install -g webpack http-server yarn \
-    && git clone --branch $BV_VEC --depth 1 https://github.com/vector-im/riot-web.git /riot-web \    
+        yarn \
+	python3 
+
+RUN apk add build-base libpng libpng-dev jpeg-dev pango-dev cairo-dev giflib-dev g++
+RUN git clone --branch $BV_VEC --depth 1 https://github.com/vector-im/riot-web.git /riot-web \    
     && cd /riot-web \
-    && git checkout $BV_VEC \
+    && git checkout $BV_VEC \    
     && yarn install \
     && rm -rf /riot-web/node_modules/phantomjs-prebuilt/phantomjs \
     && echo "riot:  $BV_VEC " > /synapse.version \
@@ -45,8 +47,11 @@ RUN chmod a+x /start.sh \
     ; \
     mv /riot-web/webapp / ; \
     echo "$BV_VEC" | tr -d v > /webapp/version ; \
+    cd /webapp ; \
+    npm install http-server ; \
     rm -rf /riot-web ; \
     rm -rf /root/.npm ; \
+    rm -rf /node_modules; \
     rm -rf /tmp/* ; \
     rm -rf /usr/local/share/.cache ;\
     rm -rf /usr/lib/node_modules/webpack ;\
@@ -60,6 +65,15 @@ RUN chmod a+x /start.sh \
         sqlite-libs \
 	git \
 	curl \
+        python3 \
+        build-base \
+        libpng \
+        libpng-dev \
+        jpeg-dev \
+        pango-dev \
+        cairo-dev \
+        giflib-dev \
+        g++ \
         ; \
-    rm -rf /var/lib/apk/* /var/cache/apk/*
+    rm -rf /var/lib/apk/* /var/cache/apk/* 
 

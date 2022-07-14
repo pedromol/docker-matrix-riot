@@ -1,4 +1,4 @@
-FROM alpine:3.11
+FROM alpine:3.14.1
 
 # Maintainer
 MAINTAINER Andreas Peters <support@aventer.biz>
@@ -10,8 +10,9 @@ COPY adds/start.sh /start.sh
 ENTRYPOINT ["/start.sh"]
 
 # Git branch to download
-ARG BV_VEC=v1.6.1
+ARG BV_VEC=v1.11.0
 ENV BV_VEC=${BV_VEC:-master}
+ENV VERSION=1.11.0
 
 # To rebuild the image, add `--build-arg REBUILD=$(date)` to your docker build
 # command.
@@ -28,12 +29,12 @@ RUN chmod a+x /start.sh \
         libjpeg-turbo \
         libressl \
         sqlite-libs \
-	git \
+      	git \
         unzip \
         nodejs \
         npm \
         yarn \
-	python3 
+      	python3 
 
 RUN apk add build-base libpng libpng-dev jpeg-dev pango-dev cairo-dev giflib-dev g++ bash
 RUN git clone --branch $BV_VEC --depth 1 https://github.com/vector-im/riot-web.git /riot-web \    
@@ -63,8 +64,8 @@ RUN git clone --branch $BV_VEC --depth 1 https://github.com/vector-im/riot-web.g
         libressl \
         npm \
         sqlite-libs \
-	git \
-	curl \
+      	git \
+      	curl \
         python3 \
         build-base \
         libpng \

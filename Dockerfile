@@ -1,4 +1,4 @@
-FROM alpine:3.14.1
+FROM alpine:3.17.1
 
 # Maintainer
 MAINTAINER Andreas Peters <support@aventer.biz>
@@ -10,9 +10,9 @@ COPY adds/start.sh /start.sh
 ENTRYPOINT ["/start.sh"]
 
 # Git branch to download
-ARG BV_VEC=v1.11.0
+ARG BV_VEC=v1.11.25
 ENV BV_VEC=${BV_VEC:-master}
-ENV VERSION=1.11.0
+ENV VERSION=1.11.25
 
 # To rebuild the image, add `--build-arg REBUILD=$(date)` to your docker build
 # command.

@@ -35,7 +35,7 @@ To support this Dockerimage please pledge via [liberapay].
 ## Start
 
 For starting you need a mapping for the `/data`-directory with
-a `riot.im.conf` file.
+a `riot.im.conf` file and a `config.json`.
 
     $ docker run -d -v /tmp/data:/data avhost/docker-matrix-riot
 
@@ -54,6 +54,26 @@ the service then.
 --cert /data/fullchain.pem
 --key /data/key.pem
 ```
+
+### Example config.json
+
+```json
+{
+    "show_labs_settings": true,  
+    "room_directory": {
+        "servers": ["matrix.org", "gitter.im", "libera.chat"]
+    },    
+    "default_server_config": {
+        "m.homeserver": {
+            "base_url": "https://<YOUR_MATRIX_SERVER>
+        },
+        "m.identity_server": {
+            "base_url": "https://vector.im"
+        }
+    }    
+}
+```
+
 
 ## build specific arguments
 
